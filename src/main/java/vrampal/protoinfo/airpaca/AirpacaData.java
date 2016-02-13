@@ -1,19 +1,18 @@
 package vrampal.protoinfo.airpaca;
 
-import java.util.Map;
 import java.util.TreeMap;
 
-import lombok.Getter;
-import lombok.Setter;
+public class AirpacaData extends TreeMap<AirpacaCity, AirpacaCityData>{
 
-public class AirpacaData {
+  private static final long serialVersionUID = 1L;
 
-  @Getter
-  @Setter
-  private Map<AirpacaCity, AirpacaCityData> dataByCities = new TreeMap<>();
-
-  public AirpacaCityData getCityData(AirpacaCity city) {
-    return dataByCities.get(city);
+  public AirpacaCityData create(AirpacaCity city) {
+    AirpacaCityData cityData = get(city);
+    if (cityData == null) {
+      cityData = new AirpacaCityData();
+      put(city, cityData);
+    }
+    return cityData;
   }
 
 }

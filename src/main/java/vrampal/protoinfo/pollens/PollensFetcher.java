@@ -46,9 +46,9 @@ public class PollensFetcher {
   public PollensData fetchDep(String depCode) {
     String urlStr = String.format(URL_TEMPLATE, depCode);
     BufferedImage image = fetchWithLog(urlStr);
-    PollensData info = new PollensData(depCode);
-    analyzeImage(image, info);
-    return info;
+    PollensData data = new PollensData(depCode);
+    analyzeImage(image, data);
+    return data;
   }
 
 }

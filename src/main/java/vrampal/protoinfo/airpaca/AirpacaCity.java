@@ -7,8 +7,13 @@ import lombok.RequiredArgsConstructor;
 public enum AirpacaCity {
 
   AIX_EN_PROVENCE("Aix-en-Provence"),
+  AUBAGNE("Aubagne"),
   AVIGNON("Avignon"),
-  CANNES_GRASSE_ANTIBES("Canne-Grasse-Antibes"),
+  BRIGNOLES("Brignoles"),
+  CANNES_GRASSE_ANTIBES("Cannes-Grasse-Antibes"),
+  CANNE_GRASSE_ANTIBES("Canne-Grasse-Antibes"), // Typo in new site :(
+  GAP("Gap"),
+  HYERES("Hyères"),
   MARSEILLE("Marseille"),
   NICE("Nice"),
   TOULON("Toulon");

@@ -43,13 +43,14 @@ public class ProtoInfo {
   }
 
   private void protoAirPaca() {
-    AirpacaData data = airpacaFetcher.fetch();
+    AirpacaData data = airpacaFetcher.fetch(true, true);
 
-    for (Entry<AirpacaCity, AirpacaCityData> entry : data.getDataByCities().entrySet()) {
+    for (Entry<AirpacaCity, AirpacaCityData> entry : data.entrySet()) {
+      log.info(entry.toString());
       AirpacaCity city = entry.getKey();
       AirpacaCityData cityData = entry.getValue();
       String msg = String.format("City : %s - Today : %d - Tomorow : %d", city.getName(),
-          cityData.getToday().getLevel(), cityData.getTomorow().getLevel());
+          cityData.getToday().getLevel(), cityData.getTomorrow().getLevel());
       log.info(msg);
     }
     log.info("-----");

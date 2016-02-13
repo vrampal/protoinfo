@@ -1,16 +1,17 @@
 package vrampal.protoinfo.airpaca;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.TreeMap;
 
-public class AirpacaCityData {
+public class AirpacaCityData extends TreeMap<AirpacaDataType, AirpacaLevel> {
 
-  @Getter
-  @Setter
-  private AirpacaLevel today;
+  private static final long serialVersionUID = 1L;
 
-  @Getter
-  @Setter
-  private AirpacaLevel tomorow;
+  public AirpacaLevel getToday() {
+    return get(AirpacaDataType.TODAY);
+  }
+
+  public AirpacaLevel getTomorrow() {
+    return get(AirpacaDataType.TOMORROW);
+  }
 
 }

@@ -1,6 +1,7 @@
 package vrampal.protoinfo.airpaca;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AirpacaFetcher {
 
-  private static final String URL = "http://www.airpaca.org/indice/atmo";
+  private static final String URL_NEW = "http://www.airpaca.org/indice/atmo?date[date]=%1$td%%2F%1$tm%%2F%1$tY";
+
+  private static final String URL_OLD = "http://www.atmopaca.org/atmo/indice_atmo.php";
 
   @SneakyThrows(IOException.class)
   private Document fetchWithLog(String urlStr) {
@@ -24,7 +27,7 @@ public class AirpacaFetcher {
     return doc;
   }
 
-  private Element findTable(Element elem) {
+  private Element findTableNew(Element elem) {
     Element table = null;
     Element divIndexTable = elem.getElementById("air-atmo-index-table");
     if (divIndexTable != null) {
@@ -33,39 +36,81 @@ public class AirpacaFetcher {
     return table;
   }
 
-  private AirpacaData parseTable(Element table) {
-    AirpacaData data = new AirpacaData();
-    if (table != null) {
-      Element tbody = table.getElementsByTag("tbody").first();
-      if (tbody != null) {
-        Elements rows = tbody.getElementsByTag("tr");
-        for (Element row : rows) {
-          Elements cells = row.getElementsByTag("td");
-          String cityText = cells.get(0).text();
-          AirpacaCity city = AirpacaCity.valueOfName(cityText);
-          if (city != null) {
-            AirpacaCityData cityData = new AirpacaCityData();
+  private Element findTableOld(Element elem) {
+    Element table = elem.getElementsByClass("resulttable").first();
+    return table;
+  }
 
-            String todayText = cells.get(3).text();
-            todayText = todayText.substring(0, todayText.indexOf(' '));
-            cityData.setToday(AirpacaLevel.valueOfLevelStr(todayText));
+  private AirpacaLevel parseCellNew(Element cell) {
+    String text = cell.text();
+    text = text.substring(0, text.indexOf(' '));
+    AirpacaLevel level = AirpacaLevel.valueOfLevelStr(text);
+    return level;
+  }
 
-            String tomorowText = cells.get(5).text();
-            tomorowText = tomorowText.substring(0, tomorowText.indexOf(' '));
-            cityData.setTomorow(AirpacaLevel.valueOfLevelStr(tomorowText));
+  private AirpacaLevel parseCellOld(Element cell) {
+    String text = cell.text();
+    AirpacaLevel level = AirpacaLevel.valueOfLevelStr(text);
+    return level;
+  }
 
-            data.getDataByCities().put(city, cityData);
-          }
+  private void analyzeTableNew(AirpacaData data, Element table) {
+    Element tbody = table.getElementsByTag("tbody").first();
+    if (tbody != null) {
+      Elements rows = tbody.getElementsByTag("tr");
+      for (Element row : rows) {
+        Elements cells = row.getElementsByTag("td");
+        String cityText = cells.get(0).text();
+        AirpacaCity city = AirpacaCity.valueOfName(cityText);
+        if (city != null) {
+          AirpacaCityData cityData = data.create(city);
+          cityData.put(AirpacaDataType.YESTERDAY, parseCellNew(cells.get(1)));
+          cityData.put(AirpacaDataType.TODAY, parseCellNew(cells.get(3)));
+          cityData.put(AirpacaDataType.TOMORROW, parseCellNew(cells.get(3)));
         }
       }
     }
-    return data;
   }
 
-  public AirpacaData fetch() {
-    Document doc = fetchWithLog(URL);
-    Element table = findTable(doc);
-    AirpacaData data = parseTable(table);
+  private void analyzeTableOld(AirpacaData data, Element table) {
+    Element tbody = table.getElementsByTag("tbody").first();
+    if (tbody != null) {
+      Elements rows = tbody.getElementsByTag("tr");
+      for (Element row : rows) {
+        Elements cells = row.getElementsByTag("td");
+        String cityText = cells.get(0).text();
+        AirpacaCity city = AirpacaCity.valueOfName(cityText);
+        if (city != null) {
+          AirpacaCityData cityData = data.create(city);
+          cityData.put(AirpacaDataType.SO2, parseCellOld(cells.get(1)));
+          cityData.put(AirpacaDataType.NO2, parseCellOld(cells.get(2)));
+          cityData.put(AirpacaDataType.PM10, parseCellOld(cells.get(3)));
+          cityData.put(AirpacaDataType.O3, parseCellOld(cells.get(4)));
+          cityData.put(AirpacaDataType.TODAY, parseCellOld(cells.get(5)));
+          cityData.put(AirpacaDataType.TOMORROW, parseCellOld(cells.get(6)));
+          cityData.put(AirpacaDataType.AFTER_TOMORROW, parseCellOld(cells.get(7)));
+        }
+      }
+    }
+  }
+
+  public AirpacaData fetch(boolean useNew, boolean useOld) {
+    AirpacaData data = new AirpacaData();
+    if (useNew) {
+      String urlStr = String.format(URL_NEW, new Date());
+      Document doc = fetchWithLog(urlStr);
+      Element table = findTableNew(doc);
+      if (table != null) {
+        analyzeTableNew(data, table);
+      }
+    }
+    if (useOld) {
+      Document doc = fetchWithLog(URL_OLD);
+      Element table = findTableOld(doc);
+      if (table != null) {
+        analyzeTableOld(data, table);
+      }
+    }
     return data;
   }
 
