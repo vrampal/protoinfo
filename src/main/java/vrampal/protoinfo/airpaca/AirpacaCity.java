@@ -11,7 +11,6 @@ public enum AirpacaCity {
   AVIGNON("Avignon"),
   BRIGNOLES("Brignoles"),
   CANNES_GRASSE_ANTIBES("Cannes-Grasse-Antibes"),
-  CANNE_GRASSE_ANTIBES("Canne-Grasse-Antibes"), // Typo in new site :(
   GAP("Gap"),
   HYERES("Hyères"),
   MARSEILLE("Marseille"),

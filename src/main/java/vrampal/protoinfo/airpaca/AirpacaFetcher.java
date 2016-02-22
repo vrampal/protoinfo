@@ -2,6 +2,7 @@ package vrampal.protoinfo.airpaca;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,6 +18,8 @@ public class AirpacaFetcher {
   private static final String URL_NEW = "http://www.airpaca.org/indice/atmo?date[date]=%1$td%%2F%1$tm%%2F%1$tY";
 
   private static final String URL_OLD = "http://www.atmopaca.org/atmo/indice_atmo.php";
+
+  private static final Pattern TYPO_PATTERN = Pattern.compile("Canne-");
 
   @SneakyThrows(IOException.class)
   private Document fetchWithLog(String urlStr) {
@@ -61,6 +64,7 @@ public class AirpacaFetcher {
       for (Element row : rows) {
         Elements cells = row.getElementsByTag("td");
         String cityText = cells.get(0).text();
+        cityText = TYPO_PATTERN.matcher(cityText).replaceAll("Cannes-"); // Typo in new site
         AirpacaCity city = AirpacaCity.valueOfName(cityText);
         if (city != null) {
           AirpacaCityData cityData = data.create(city);
