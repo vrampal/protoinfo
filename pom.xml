@@ -38,15 +38,15 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jdk.version>1.7</jdk.version>
-    <slf4j.version>1.7.15</slf4j.version>
+    <jdk.version>1.8</jdk.version>
+    <slf4j.version>1.7.21</slf4j.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.16.6</version>
+      <version>1.16.8</version>
       <scope>provided</scope>
     </dependency>
 
