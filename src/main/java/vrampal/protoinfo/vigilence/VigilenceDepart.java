@@ -31,7 +31,7 @@ public class VigilenceDepart {
   private List<RiskTypeTag> riskList = Collections.emptyList();
 
   public List<RiskType> getRiskTypeList() {
-    List<RiskType> riskTypeList = new ArrayList<RiskType>(riskList.size());
+    List<RiskType> riskTypeList = new ArrayList<>(riskList.size());
     for (RiskTypeTag risk : riskList) {
       riskTypeList.add(risk.getVal());
     }

@@ -21,10 +21,12 @@ import vrampal.protoinfo.vigilence.VigilenceDepart;
 import vrampal.protoinfo.vigilence.VigilenceFetcher;
 
 @Slf4j
-public class ProtoInfo {
+public class ProtoInfoApp {
+
+  private static final String SEPAR = "----------";
 
   public static void main(String[] args) {
-    new ProtoInfo().run();
+    new ProtoInfoApp().run();
   }
 
   private final AirpacaFetcher airpacaFetcher = new AirpacaFetcher();
@@ -53,7 +55,7 @@ public class ProtoInfo {
           cityData.getToday().getLevel(), cityData.getTomorrow().getLevel());
       log.info(msg);
     }
-    log.info("-----");
+    log.info(SEPAR);
   }
 
   private void protoEcowatt() {
@@ -61,7 +63,7 @@ public class ProtoInfo {
 
     String msg = String.format("Today : %d - Tomorow : %d", data.getToday().getLevel(), data.getTomorow().getLevel());
     log.info(msg);
-    log.info("-----");
+    log.info(SEPAR);
   }
 
   private void protoPollens() {
@@ -72,7 +74,7 @@ public class ProtoInfo {
       String msg = String.format("%s : %d", entry.getKey().getName(), entry.getValue().getLevel());
       log.info(msg);
     }
-    log.info("-----");
+    log.info(SEPAR);
   }
 
   private void protoVigilence() {
@@ -85,7 +87,7 @@ public class ProtoInfo {
       msg = String.format("Risque : %s", risque.getName());
       log.info(msg);
     }
-    log.info("-----");
+    log.info(SEPAR);
   }
 
 }
