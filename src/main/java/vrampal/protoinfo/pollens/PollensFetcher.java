@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PollensFetcher {
 
-  private static final String URL_TEMPLATE = "http://www.pollens.fr/docs/d%%20%s.gif";
+  private static final String URL_TEMPLATE = "http://internationalragweedsociety.org/vigilance/d%%20%s.gif";
 
   private static final int COLUMN_PIXEL = 125;
 
