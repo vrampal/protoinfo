@@ -16,6 +16,7 @@ public class EcowattFetcherTest {
   }
 
   @Test
+  @Ignore("Broken with new website")
   public void testFetchEcowattRegion() {
     EcowattData data = fetcher.fetch(EcowattRegion.PACA);
     assertNotNull(data);
