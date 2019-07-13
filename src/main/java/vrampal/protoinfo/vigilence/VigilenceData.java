@@ -2,8 +2,6 @@ package vrampal.protoinfo.vigilence;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +10,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 @NoArgsConstructor
-@XmlRootElement
 public class VigilenceData {
 
   @Getter
