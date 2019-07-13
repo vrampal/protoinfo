@@ -40,7 +40,7 @@ public class ProtoInfoApp {
   public void run() {
     protoAirPaca();
     //protoEcowatt();
-    protoPollens();
+    //protoPollens();
     protoVigilence();
   }
 
